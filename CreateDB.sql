@@ -4,6 +4,7 @@ DROP TABLE Major
 DROP TABLE StudentRegistry
 DROP TABLE Timetable
 DROP TABLE StudentEnrolment
+DROP TABLE CoursesForAcademicProgram
 DROP TABLE AcademicProgram 
 DROP TABLE CoursesPerTimePeriod
 DROP TABLE CourseOffering
@@ -214,7 +215,7 @@ credits			INT DEFAULT 10,
 description		VARCHAR (100),
 courseType		CHAR (15),
 
-CONSTRAINT fkCourseOffering
+--CONSTRAINT fkCourseOffering
 FOREIGN KEY (staffID) references Staff(staffID) ON UPDATE CASCADE ON DELETE NO ACTION,
 FOREIGN KEY (campusID) references Campus(campusID) ON UPDATE CASCADE ON DELETE NO ACTION
 )
@@ -222,6 +223,8 @@ go
 
 -- Data for course offering
 INSERT INTO CourseOffering VALUES ('COMP3350','Advanced Databases','TJ732','COMP1140','CAL',default,'Learn more about databases','Directed')
+INSERT INTO CourseOffering VALUES ('COMP1140','Database','TJ732',NULL,'CAL',default,'Learn basics databases','Core')
+INSERT INTO CourseOffering VALUES ('COMP2240','Operating Systems','TJ732','MATH1510','CAL',default,'Learn about discrete maths','Core')
 INSERT INTO CourseOffering VALUES ('HUMA2070','AUSLAN I','JM717',null,'SIN',default,'Learn sign languages','Elective')
 INSERT INTO CourseOffering VALUES ('BUS1001','Introduction to Business Studies','TJ732',null,'OUR',default,'Intro to business and related','Core')
 INSERT INTO CourseOffering VALUES ('DSGN3000','Design and Textiles','KR418','DSGN2090','SYD',20,'Learn about design and textiles with some prac work','Core')
@@ -240,39 +243,71 @@ FOREIGN KEY (courseID) references CourseOffering (courseID)
 )
 
 --Data for coursespertimeperiod
-INSERT INTO CoursesPerTimePeriod VALUES (
-INSERT INTO CoursesPerTimePeriod VALUES (
-INSERT INTO CoursesPerTimePeriod VALUES (
-INSERT INTO CoursesPerTimePeriod VALUES (
-INSERT INTO CoursesPerTimePeriod VALUES (
-go
+INSERT INTO CoursesPerTimePeriod VALUES ('COMP3350','S2_2022','Semester 2')
+INSERT INTO CoursesPerTimePeriod VALUES ('HUMA2070','S1_2022','Semester 1')
+INSERT INTO CoursesPerTimePeriod VALUES ('BUS1001','S2_2022','Semester 2')
+INSERT INTO CoursesPerTimePeriod VALUES ('DSGN3000','T1_2022','Trimester 1')
+INSERT INTO CoursesPerTimePeriod VALUES ('ENG3500','S1_2023','Semester 1')
+INSERT INTO CoursesPerTimePeriod VALUES ('COMP3350','T2_2022','Trimester 2')
+INSERT INTO CoursesPerTimePeriod VALUES ('HUMA2070','S2_2022','Semester 2')
+INSERT INTO CoursesPerTimePeriod VALUES ('BUS1001','T3_2022','Trimester 3')
+INSERT INTO CoursesPerTimePeriod VALUES ('DSGN3000','S2_2022','Semester 2')
+INSERT INTO CoursesPerTimePeriod VALUES ('ENG3500','T1_2022','Trimester 1')
+--go
 select * from CoursesPerTimePeriod
+
 -- Academic Program table
 CREATE TABLE AcademicProgram (
 pCode					CHAR (10) PRIMARY KEY,
-name					VARCHAR NOT NULL UNIQUE,
+name					VARCHAR(30) NOT NULL UNIQUE,
 staffID					CHAR (10),
-courseID				CHAR (10),
 credits					INT CHECK (credits > 100),
-level					VARCHAR, 
-certificationAchieved	VARCHAR, 
+level					VARCHAR (20), 
+certificationAchieved	VARCHAR (20), 
 
 CONSTRAINT fkAcademicProgram
 FOREIGN KEY (staffID) references Staff(staffID) ON UPDATE CASCADE ON DELETE NO ACTION,
-FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+go
+-- Data for academic program
+
+INSERT INTO AcademicProgram VALUES ('COMPSCI', 'Computer Science','KR418',140,'Bachelors','BsC')
+INSERT INTO AcademicProgram VALUES ('MECHENG', 'Mechtronics Engineering','JM717', 140, 'Master','MD')
+INSERT INTO AcademicProgram VALUES ('FASHDES', 'Fashion Design','QT420',160, 'Doctors','PhD')
+go
+
+-- Table assign courses to Academic Program
+CREATE TABLE CoursesForAcademicProgram (
+pCode					CHAR (10),
+courseID				CHAR (10),
+
+
+FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE NO ACTION ON DELETE NO ACTION,
+FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE CASCADE ON DELETE NO ACTION,
 )
 go
 
--- Data for academic program
+-- Data for courses for academic program
+INSERT INTO CoursesForAcademicProgram VALUES ('COMPSCI', 'COMP3350')
+INSERT INTO CoursesForAcademicProgram VALUES ('MECHENG', 'ENG3500')
+INSERT INTO CoursesForAcademicProgram VALUES ('COMPSCI', 'COMP2240')
+INSERT INTO CoursesForAcademicProgram VALUES ('MECHENG', 'HUMA2070')
+INSERT INTO CoursesForAcademicProgram VALUES ('FASHDES', 'DSGN3000')
+INSERT INTO CoursesForAcademicProgram VALUES ('COMPSCI', 'COMP1140')
+INSERT INTO CoursesForAcademicProgram VALUES ('COMPSCI','BUS1001')
+INSERT INTO CoursesForAcademicProgram VALUES ('MECHENG','BUS1001')
+go
 
 -- Student enrolment table. This is info about students enrolled in an academic program
 CREATE TABLE StudentEnrolment (
 studentID		CHAR (10) PRIMARY KEY,
+fName			CHAR (20) NOT NULL,
+lName			CHAR (20) NOT NULL,
 pCode			CHAR (10),
 timeID			CHAR (10),
-dateEnrolled	DATE,
+dateEnrolled	DATE NOT NULL,
 dateCompleted	DATE,
-status			BIT DEFAULT 0 CHECK (status between 0 and 1),
+status			CHAR (10),
 
 CONSTRAINT fkStudentEnrolment
 FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE NO ACTION ON DELETE NO ACTION,
@@ -281,6 +316,12 @@ FOREIGN KEY (timeID) references TimePeriod(timeID) ON UPDATE CASCADE ON DELETE N
 go
 
 --Data for student enrolment
+INSERT INTO StudentEnrolment VALUES ('C3324150', 'Kaitlin', 'Murray','COMPSCI' ,'S1_2023','2023-06-28',null,'Inactive')
+INSERT INTO StudentEnrolment VALUES ('C3320409', 'Minnie', 'Peagram', 'COMPSCI', 'S1_2022','2022-02-28','2024-12-24','Active')
+INSERT INTO StudentEnrolment VALUES ('C3304630', 'Jacob', 'Bumnanpol','MECHENG' ,'T1_2022','2022-01-28','2023-06-28','Active')
+INSERT INTO StudentEnrolment VALUES ('C9675848', 'Bob', 'The-Builder','FASHDES' ,'S1_2022','2022-02-28','2023-11-30','Active')
+INSERT INTO StudentEnrolment VALUES ('C0384732', 'Caitlyn', 'Murry', 'MECHENG','S2_2022','2022-06-28',null,'Inactive')
+go
 
 --Timetable table. This has all timetable info for a single course. 
 CREATE TABLE Timetable (
@@ -332,7 +373,7 @@ name		VARCHAR,
 description VARCHAR,
 credits		INT DEFAULT 10 CHECK (credits > 9),
 
-FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE CASCADE ON DELETE NO ACTION
+FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 go 
 
