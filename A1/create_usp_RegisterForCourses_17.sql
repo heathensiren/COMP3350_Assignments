@@ -1,9 +1,9 @@
-/*	Author: Kaitlin Murray and Minnie Bumnanpol
+ï»¿/*	Author: Kaitlin Murray and Minnie Bumnanpol
 	Student Numbers: c3324150 and c3320409
 	Description:Stored Procedure
 
-	Parameters:studentNumber – Student number of the student registering for courses
-	CourseOfferingList– Course offering list contains a Table-Valued Parameter
+	Parameters:studentNumber ï¿½ Student number of the student registering for courses
+	CourseOfferingListï¿½ Course offering list contains a Table-Valued Parameter
 	that has the course offering identifiers (e.g. CourseOfferingIds) that a student
 	wants to register to.
 	Functionality: Register the student specified in the studentNumber to the courses offerings
@@ -49,6 +49,7 @@ BEGIN
 	OPEN curCourseOfferingList
 	FETCH NEXT FROM curCourseOfferingList INTO @studentID, @courseID
 	WHILE @@FETCH_STATUS = 0
+	BEGIN
 
 	BEGIN TRY
 	--insert into the row
@@ -73,3 +74,4 @@ BEGIN
 	DEALLOCATE curCourseOfferingList
 END
 GO 
+
