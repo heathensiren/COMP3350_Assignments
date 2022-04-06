@@ -6,6 +6,7 @@
 -- Dropping tables
 DROP TABLE Minor
 DROP TABLE Major
+DROP TABLE Register
 DROP TABLE StudentRegistry
 DROP TABLE Timetable
 DROP TABLE StudentEnrolment
