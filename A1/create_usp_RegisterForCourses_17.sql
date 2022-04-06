@@ -50,22 +50,39 @@ BEGIN
 	FETCH NEXT FROM curCourseOfferingList INTO @studentID, @courseID
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
+		DECLARE @count INT
+		
+		-- Find out whether the registration exists
+		SELECT @count = COUNT(*)
+		FROM Register r
+		WHERE r.courseID = @courseID AND r.studentID = @studentID
+		
+		IF @count > 0 -- Registration exists
+		BEGIN
+				RAISERROR('This Student has already signed up for this course',11,1)
+			--RETURN -- Exit out of the procedure to provident incorrect data being passed forward.
+		END
+		ELSE -- New registration
+		BEGIN
+			BEGIN TRY
+				-- Insert a new record
+				INSERT INTO Register(studentID,courseID) 
+				VALUES (@studentID, @courseID)
+			END TRY
+			BEGIN CATCH
+				DECLARE @errMsg NVARCHAR(255)
+				SELECT @errMsg = ERROR_MESSAGE()  
+				-- error 
+				RAISERROR (@errMsg, 10, 1)
+			END CATCH
+		END
+		
 
-	BEGIN TRY
-	--insert into the row
-		INSERT INTO Register(studentID,courseID)
-		VALUES (@studentID, @courseID)--, @timeID)
-		END TRY
-	BEGIN CATCH
-	-- if error occurs raise error message and exit
-		DECLARE @errorMessage NVARCHAR(255)
-		SET @errorMessage = ERROR_MESSAGE()
-		RAISERROR(@errorMessage,9,1)
-	END CATCH
+		-- Fetch the next row
+		FETCH NEXT FROM curCourseOfferingList INTO @studentID, @courseID
+		
+	END -- End of While
 	
-	-- Fetch the next row
-		FETCH NEXT FROM curCourseOfferingList INTO @studentID, @courseID	
-	END
 
 	-- Close cursor
 	CLOSE curCourseOfferingList
