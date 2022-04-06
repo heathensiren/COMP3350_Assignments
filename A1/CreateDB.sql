@@ -407,14 +407,14 @@ FOREIGN KEY (studentID) references StudentEnrolment(studentID) ON UPDATE NO ACTI
 FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON DELETE NO ACTION
 )
 go
-
+/*
 INSERT INTO Register VALUES ('c3324150', 'COMP3350')
 INSERT INTO Register VALUES ('c3324150', 'COMP1140')
 INSERT INTO Register VALUES ('c3324150', 'COMP2240')
-INSERT INTO Register VALUES ('C3320409', 'COMP3350')
+INSERT INTO Register VALUES ('c3320409', 'COMP3350')
 INSERT INTO Register VALUES ('C3320409', 'COMP1140')
 go
-
+*/
 -- Student registry table. This is info for a student enrolled in a single course. 
 CREATE TABLE StudentRegistry (
 studentID		CHAR (10),
