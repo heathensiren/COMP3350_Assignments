@@ -1,4 +1,4 @@
-/*	Author: Kaitlin Murray and Minnie Bumnapol
+/*	Author: Kaitlin Murray and Minnie Bumnanpol
 	Student Numbers: c3324150 and c3320409
 	Description:Database for UniversityX
 	Database creation and Sample Data
@@ -358,6 +358,14 @@ INSERT INTO Timetable VALUES ('BUS1001', 'BB','2022-03-04', '10:00:00','12:00:00
 INSERT INTO Timetable VALUES ('BUS1001', 'BB','2022-03-04', '15:00:00','17:00:00', 'tutorial')
 go 
 
+CREATE TABLE Register (
+studentID		CHAR (10),
+courseID		CHAR (10)
+
+FOREIGN KEY (studentID) references StudentEnrolment(studentID) ON UPDATE NO ACTION ON DELETE NO ACTION,
+FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON DELETE NO ACTION
+)
+go
 
 
 -- Student registry table. This is info for a student enrolled in a single course. 
@@ -365,8 +373,8 @@ CREATE TABLE StudentRegistry (
 studentID		CHAR (10),
 courseID		CHAR (10),
 timeID			CHAR(10),
---finalMark		INT DEFAULT 0 CHECK (finalMark BETWEEN 0 and 100),
---finalGrade		CHAR (5),
+finalMark		INT DEFAULT 0 CHECK (finalMark BETWEEN 0 and 100),
+finalGrade		CHAR (5),
 
 FOREIGN KEY (studentID) references StudentEnrolment(studentID) ON UPDATE NO ACTION ON DELETE NO ACTION,
 FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON DELETE NO ACTION
@@ -374,15 +382,15 @@ FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON 
 go
 
 -- Data for student registry
-INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP3350','S2_2022') --,default,null)
-INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP1140','S1_2022') --,91 ,'HD')
-INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP2240','S1_2023')--, default,null)
-INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP3350','T1_2022') --,90,'HD')
-INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP1140','T2_2022') --,84,'D')
-INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP2240','T3_2022')-- ,default,null)
-INSERT INTO StudentRegistry VALUES ('C3304630', 'COMP3350','T1_2023')-- ,90,'HD')
-INSERT INTO StudentRegistry VALUES ('C9675848', 'DSGN3000','T2_2023') --,84,'D')
-INSERT INTO StudentRegistry VALUES ('C0384732', 'BUS1001','T3_2023') --,default,null)
+INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP3350','S2_2022',default,null)
+INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP1140','S1_2022',91 ,'HD')
+INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP2240','S1_2023', default,null)
+INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP3350','T1_2022',90,'HD')
+INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP1140','T2_2022',84,'D')
+INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP2240','T3_2022',default,null)
+INSERT INTO StudentRegistry VALUES ('C3304630', 'COMP3350','T1_2023',90,'HD')
+INSERT INTO StudentRegistry VALUES ('C9675848', 'DSGN3000','T2_2023',84,'D')
+INSERT INTO StudentRegistry VALUES ('C0384732', 'BUS1001','T3_2023',default,null)
 go
 
 -- Major table. Info about major course
