@@ -340,27 +340,26 @@ date		DATE NOT NULL,
 startTime	TIME NOT NULL,
 endTime		TIME NOT NULL,
 reason		VARCHAR (20) NOT NULL,
-isStudent	BIT CHECK(isStudent = 1) NOT NULL,
 
 FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON DELETE NO ACTION,
 FOREIGN KEY (buildingID) references Facilities(buildingID) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 go
 -- Data for timetable 
-INSERT INTO Timetable VALUES (1,'COMP3350','ES', '2022-03-02', '12:00:00','14:00:00', 'lab','1')
-INSERT INTO Timetable VALUES (2,'COMP3350','ES', '2022-03-02', '10:00:00','12:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (3,'ENG3500', 'ES','2022-03-03', '11:00:00','13:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (4,'ENG3500', 'ES','2022-03-03', '13:00:00','15:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (5,'COMP2240', 'EF','2022-03-03', '15:00:00','17:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (6,'COMP2240', 'EF','2022-03-04', '15:00:00','17:00:00', 'tutorial','1')
-INSERT INTO Timetable VALUES (7,'HUMA2070', 'SS','2022-03-05', '7:00:00','9:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (8,'HUMA2070', 'SS','2022-03-05', '9:00:00','11:00:00', 'tutorial','1')
-INSERT INTO Timetable VALUES (9,'DSGN3000', 'DB','2022-03-08', '10:00:00','12:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (10,'DSGN3000', 'DB','2022-03-08', '13:00:00','15:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (11,'COMP1140', 'EF','2022-03-09', '10:00:00','12:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (12,'COMP1140', 'EF','2022-03-09', '7:00:00','9:00:00', 'lab','1')
-INSERT INTO Timetable VALUES (13,'BUS1001', 'BB','2022-03-04', '10:00:00','12:00:00', 'lecture','1')
-INSERT INTO Timetable VALUES (14,'BUS1001', 'BB','2022-03-04', '15:00:00','17:00:00', 'tutorial','1')
+INSERT INTO Timetable VALUES (1,'COMP3350','ES', '2022-03-02', '12:00:00','14:00:00', 'lab')
+INSERT INTO Timetable VALUES (2,'COMP3350','ES', '2022-03-02', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES (3,'ENG3500', 'ES','2022-03-03', '11:00:00','13:00:00', 'lecture')
+INSERT INTO Timetable VALUES (4,'ENG3500', 'ES','2022-03-03', '13:00:00','15:00:00', 'lecture')
+INSERT INTO Timetable VALUES (5,'COMP2240', 'EF','2022-03-03', '13:00:00','14:00:00', 'lecture')
+INSERT INTO Timetable VALUES (6,'COMP2240', 'EF','2022-03-04', '15:00:00','17:00:00', 'tutorial')
+INSERT INTO Timetable VALUES (7,'HUMA2070', 'SS','2022-03-05', '7:00:00','9:00:00', 'lecture')
+INSERT INTO Timetable VALUES (8,'HUMA2070', 'SS','2022-03-05', '8:00:00','11:00:00', 'tutorial')
+INSERT INTO Timetable VALUES (9,'DSGN3000', 'DB','2022-03-08', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES (10,'DSGN3000', 'DB','2022-03-08', '13:00:00','15:00:00', 'lecture')
+INSERT INTO Timetable VALUES (11,'COMP1140', 'EF','2022-03-09', '8:00:00','10:00:00', 'lecture')
+INSERT INTO Timetable VALUES (12,'COMP1140', 'EF','2022-03-09', '7:00:00','9:00:00', 'lab')
+INSERT INTO Timetable VALUES (13,'BUS1001', 'BB','2022-03-04', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES (14,'BUS1001', 'BB','2022-03-04', '15:00:00','17:00:00', 'tutorial')
 go 
 
 --Timetable for staff table. This has all timetable info for a single course. 
@@ -374,8 +373,11 @@ FOREIGN KEY (staffID) references Staff(staffID) ON UPDATE NO ACTION ON DELETE NO
 go
 -- Data for timetable staff
 INSERT INTO TimetableStaff VALUES (1,'TJ732')
+INSERT INTO TimetableStaff VALUES (9,'JM717')
+INSERT INTO TimetableStaff VALUES (4,'KR418')
+INSERT INTO TimetableStaff VALUES (6,'TJ732')
+INSERT INTO TimetableStaff VALUES (7,'TJ732')
 INSERT INTO TimetableStaff VALUES (2,'JM717')
-INSERT INTO TimetableStaff VALUES (3,'KR418')
 go 
 
 --Timetable for student table. This has all timetable info for a single course. 
@@ -389,8 +391,11 @@ FOREIGN KEY (studentID) references StudentEnrolment(studentID) ON UPDATE NO ACTI
 go
 -- Data for student timetable 
 INSERT INTO TimetableStudent VALUES (4,'C3320409')
-INSERT INTO TimetableStudent VALUES (5,'C3304630')
+INSERT INTO TimetableStudent VALUES (7,'C3304630')
 INSERT INTO TimetableStudent VALUES (6,'C9675848')
+INSERT INTO TimetableStudent VALUES (14,'C3320409')
+INSERT INTO TimetableStudent VALUES (12,'C3304630')
+INSERT INTO TimetableStudent VALUES (11,'C9675848')
 go 
 
 --Timetable for student registering into courses 
@@ -403,6 +408,12 @@ FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON 
 )
 go
 
+INSERT INTO Register VALUES ('c3324150', 'COMP3350')
+INSERT INTO Register VALUES ('c3324150', 'COMP1140')
+INSERT INTO Register VALUES ('c3324150', 'COMP2240')
+INSERT INTO Register VALUES ('C3320409', 'COMP3350')
+INSERT INTO Register VALUES ('C3320409', 'COMP1140')
+go
 
 -- Student registry table. This is info for a student enrolled in a single course. 
 CREATE TABLE StudentRegistry (
