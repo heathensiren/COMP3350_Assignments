@@ -2,8 +2,8 @@
 If a student or staff member is assigned a timeslot that overlaps with an existing timetable slot then it should be rejected and a warning message generated
 Trigger checkTimetableClashStudent and checkTimeTableClashStaff 
 STEPS:
-1. Search through timetable and count the timestableid and their time
-2. Search through student and staff timetable and count the timetableid and student or staff number
+1. Declare cursor and read data 
+2. Connect all data with the temp values and inserted data 
 3. If time linked to timetable id overlaps with student or staff number then raise error and rollback transaction*/
 
 DROP TRIGGER checkTimetableClashStaff
@@ -42,15 +42,12 @@ BEGIN
 		SELECT @count = COUNT(*)
 		FROM Inserted i,			--New data inserted into timetable
 			 Timetable t,
-			 StudentEnrolment se
+			 TimetableStudent ts
 			 
 			 -- Connecting all id's and dates and then checking the timetable clash 
-		WHERE	i.timetable = t.timetableID		AND
-				i.timetable != @timetable		AND
-				i.studentID = se.studentID		AND
-				i.studentID = @student			AND
-				t.date = @date					AND
-				((t.startTime >= @startTime AND t.startTime < @endTime) OR (t.endTime > @startTime AND t.endTime <= @endTime))
+		WHERE	t.date = @date					AND
+				t.timetableID = ts.timetable	AND
+				((t.startTime > @startTime AND t.startTime < @endTime) OR (t.endTime > @startTime AND t.endTime > @endTime))
 
 		IF @currentCount > @count
 		BEGIN
@@ -65,7 +62,7 @@ BEGIN
 
 	IF @count > 0
 	BEGIN
-		RAISERROR('Clash in timetable for the student.', 19, 1)
+		RAISERROR('Clash in timetable for the student.', 11, 1)
 		ROLLBACK TRANSACTION
 	END
 END
@@ -103,16 +100,12 @@ BEGIN
 			SELECT @count = COUNT(*)
 			FROM Inserted i,			--New data inserted into timetable
 				 Timetable t,
-				 Staff s,
 				 TimetableStaff tss
 			 
 				 -- Connecting all id's and dates and then checking the timetable clash 
-			WHERE	i.timetable = t.timetableID		AND
-					i.timetable != @timetable		AND
-					i.staffID = s.staffID			AND
-					i.staffID = @staff				AND
-					t.date = @date					AND
-					((t.startTime >= @startTime AND t.startTime < @endTime) OR (t.endTime > @startTime AND t.endTime <= @endTime))
+			WHERE	t.date = @date					AND
+					t.timetableID = tss.timetable	AND
+					((t.startTime > @startTime AND t.startTime < @endTime) OR (t.endTime > @startTime AND t.endTime > @endTime))
 
 			IF @currentCount > @count
 			BEGIN
@@ -127,7 +120,7 @@ BEGIN
 
 		IF @count > 0
 		BEGIN
-			RAISERROR('Clash in timetable for the student.', 19, 1)
+			RAISERROR('Clash in timetable for the staff.', 11, 1)
 			ROLLBACK TRANSACTION
 		END
 END

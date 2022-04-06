@@ -347,7 +347,7 @@ FOREIGN KEY (buildingID) references Facilities(buildingID) ON UPDATE NO ACTION O
 go
 -- Data for timetable 
 INSERT INTO Timetable VALUES (1,'COMP3350','ES', '2022-03-02', '12:00:00','14:00:00', 'lab')
-INSERT INTO Timetable VALUES (2,'COMP3350','ES', '2022-03-02', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES (2,'COMP3350','ES', '2022-03-02', '10:00:00','11:00:00', 'lecture')
 INSERT INTO Timetable VALUES (3,'ENG3500', 'ES','2022-03-03', '11:00:00','13:00:00', 'lecture')
 INSERT INTO Timetable VALUES (4,'ENG3500', 'ES','2022-03-03', '13:00:00','15:00:00', 'lecture')
 INSERT INTO Timetable VALUES (5,'COMP2240', 'EF','2022-03-03', '13:00:00','14:00:00', 'lecture')
