@@ -17,6 +17,10 @@ INSERT INTO @CourseOfferingList VALUES ('c3320409', 'COMP1140')
 
 EXEC usp_RegisterForCourses @CourseOfferingList
 
+INSERT INTO @CourseOfferingList VALUES ('c3324150', 'COMP3350')
+INSERT INTO @CourseOfferingList VALUES ('c3324150', 'COMP2240')
+INSERT INTO @CourseOfferingList VALUES ('c3320409', 'COMP1140')
+
 SELECT * FROM Register
 
 
