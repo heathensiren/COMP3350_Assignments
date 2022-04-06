@@ -364,10 +364,10 @@ go
 
 --Timetable for staff table. This has all timetable info for a single course. 
 CREATE TABLE TimetableStaff (
-timetableID INT,
+timetable	INT,
 staffID		CHAR (10),
 
-FOREIGN KEY (timetableID) references Timetable(timetableID) ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY (timetable) references Timetable(timetableID) ON UPDATE CASCADE ON DELETE NO ACTION,
 FOREIGN KEY (staffID) references Staff(staffID) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 go
@@ -382,10 +382,10 @@ go
 
 --Timetable for student table. This has all timetable info for a single course. 
 CREATE TABLE TimetableStudent (
-timetableID INT,
+timetable   INT,
 studentID	CHAR (10),
 
-FOREIGN KEY (timetableID) references Timetable(timetableID) ON UPDATE CASCADE ON DELETE NO ACTION,
+FOREIGN KEY (timetable) references Timetable(timetableID) ON UPDATE CASCADE ON DELETE NO ACTION,
 FOREIGN KEY (studentID) references StudentEnrolment(studentID) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 go
