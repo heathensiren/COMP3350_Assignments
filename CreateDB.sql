@@ -1,3 +1,8 @@
+/*	Author: Kaitlin Murray and Minnie Bumnapol
+	Student Numbers: c3324150 and c3320409
+	Description:Database for UniversityX
+	Database creation and Sample Data
+*/
 -- Dropping tables
 DROP TABLE Minor
 DROP TABLE Major
@@ -330,21 +335,38 @@ buildingID	CHAR (10),
 date		DATE,
 startTime	TIME,
 endTime		TIME,
-reason		VARCHAR,
+reason		VARCHAR (20),
 
 FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON DELETE NO ACTION,
 FOREIGN KEY (buildingID) references Facilities(buildingID) ON UPDATE NO ACTION ON DELETE NO ACTION
 )
 go
 -- Data for timetable 
+INSERT INTO Timetable VALUES ('COMP3350','ES', '2022-03-02', '12:00:00','14:00:00', 'lab')
+INSERT INTO Timetable VALUES ('COMP3350','ES', '2022-03-02', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('ENG3500', 'ES','2022-03-03', '11:00:00','13:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('ENG3500', 'ES','2022-03-03', '13:00:00','15:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('COMP2240', 'EF','2022-03-03', '15:00:00','17:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('COMP2240', 'EF','2022-03-04', '15:00:00','17:00:00', 'tutorial')
+INSERT INTO Timetable VALUES ('HUMA2070', 'SS','2022-03-05', '7:00:00','9:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('HUMA2070', 'SS','2022-03-05', '9:00:00','11:00:00', 'tutorial')
+INSERT INTO Timetable VALUES ('DSGN3000', 'DB','2022-03-08', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('DSGN3000', 'DB','2022-03-08', '13:00:00','15:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('COMP1140', 'EF','2022-03-09', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('COMP1140', 'EF','2022-03-09', '7:00:00','9:00:00', 'lab')
+INSERT INTO Timetable VALUES ('BUS1001', 'BB','2022-03-04', '10:00:00','12:00:00', 'lecture')
+INSERT INTO Timetable VALUES ('BUS1001', 'BB','2022-03-04', '15:00:00','17:00:00', 'tutorial')
+go 
+
+
 
 -- Student registry table. This is info for a student enrolled in a single course. 
 CREATE TABLE StudentRegistry (
 studentID		CHAR (10),
 courseID		CHAR (10),
-dateRegistered	DATE,
-finalMark		INT DEFAULT 0 CHECK (finalMark BETWEEN 0 and 100),
-finalGrade		CHAR (5),
+timeID			CHAR(10),
+--finalMark		INT DEFAULT 0 CHECK (finalMark BETWEEN 0 and 100),
+--finalGrade		CHAR (5),
 
 FOREIGN KEY (studentID) references StudentEnrolment(studentID) ON UPDATE NO ACTION ON DELETE NO ACTION,
 FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON DELETE NO ACTION
@@ -352,12 +374,22 @@ FOREIGN KEY (courseID) references CourseOffering(courseID) ON UPDATE CASCADE ON 
 go
 
 -- Data for student registry
+INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP3350','S2_2022') --,default,null)
+INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP1140','S1_2022') --,91 ,'HD')
+INSERT INTO StudentRegistry VALUES ('c3324150', 'COMP2240','S1_2023')--, default,null)
+INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP3350','T1_2022') --,90,'HD')
+INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP1140','T2_2022') --,84,'D')
+INSERT INTO StudentRegistry VALUES ('C3320409', 'COMP2240','T3_2022')-- ,default,null)
+INSERT INTO StudentRegistry VALUES ('C3304630', 'COMP3350','T1_2023')-- ,90,'HD')
+INSERT INTO StudentRegistry VALUES ('C9675848', 'DSGN3000','T2_2023') --,84,'D')
+INSERT INTO StudentRegistry VALUES ('C0384732', 'BUS1001','T3_2023') --,default,null)
+go
 
 -- Major table. Info about major course
 CREATE TABLE Major (
 pCode		CHAR (10),
-name		VARCHAR,
-description VARCHAR,
+name		VARCHAR (30),
+description VARCHAR (50),
 credits		INT DEFAULT 10 CHECK (credits > 9),
 
 FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE CASCADE ON DELETE NO ACTION
@@ -365,12 +397,19 @@ FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE CASCADE ON DELET
 go
 
 --Data for major
+INSERT INTO Major VALUES ('COMPSCI', 'Computer Science','Software Development ', default)
+INSERT INTO Major VALUES ('COMPSCI', 'Computer Science','AI and Machine Learning', default)
+INSERT INTO Major VALUES ('COMPSCI', 'Computer Science','Cyber Security', 14)
+INSERT INTO Major VALUES ('MECHENG', 'Mechatronics Engineering','Mechatronics', 12)
+INSERT INTO Major VALUES ('FASHDES', 'Fashion Design','High Fashion', default)
+INSERT INTO Major VALUES ('FASHDES', 'Fashion Design','Commercial', default)
+go
 
 -- Minor table. Info about minor course
 CREATE TABLE Minor (
 pCode		CHAR (10),
-name		VARCHAR,
-description VARCHAR,
+name		VARCHAR(30),
+description VARCHAR(50),
 credits		INT DEFAULT 10 CHECK (credits > 9),
 
 FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE NO ACTION ON DELETE NO ACTION
@@ -378,3 +417,10 @@ FOREIGN KEY (pCode) references AcademicProgram(pCode) ON UPDATE NO ACTION ON DEL
 go 
 
 -- Data for minor 
+INSERT INTO Minor VALUES ('COMPSCI', 'Computer Science','Software Development ', default)
+INSERT INTO Minor VALUES ('COMPSCI', 'Computer Science','AI and Machine Learning', default)
+INSERT INTO Minor VALUES ('COMPSCI', 'Computer Science','Cyber Security', 14)
+INSERT INTO Minor VALUES ('MECHENG', 'Mechatronics Engineering','Mechatronics', 12)
+INSERT INTO Minor VALUES ('FASHDES', 'Fashion Design','High Fashion', default)
+INSERT INTO Minor VALUES ('FASHDES', 'Fashion Design','Commercial', default)
+go
